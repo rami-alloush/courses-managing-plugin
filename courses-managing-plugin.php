@@ -45,6 +45,10 @@ if(!class_exists('cmp_plugin'))
         /* Construct the plugin object */
         public function __construct()
         {
+			require_once( 'BFIGitHubPluginUploader.php' );
+			if ( is_admin() ) {
+				new BFIGitHubPluginUpdater( __FILE__, 'MrNoComment', "courses-managing-plugin" );
+			}
 			// register actions
 			add_action('admin_init', array(&$this, 'admin_init'));
 			add_action('admin_menu', array(&$this, 'manage_menu'));
