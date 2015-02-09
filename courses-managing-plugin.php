@@ -45,7 +45,7 @@ if(!class_exists('cmp_plugin'))
         /* Construct the plugin object */
         public function __construct()
         {
-			require_once( 'BFIGitHubPluginUploader.php' );
+			require_once(sprintf("%s/includes/BFIGitHubPluginUploader.php", dirname(__FILE__)));
 			if ( is_admin() ) {
 				new BFIGitHubPluginUpdater( __FILE__, 'MrNoComment', "courses-managing-plugin" );
 			}
