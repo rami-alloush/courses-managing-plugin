@@ -146,7 +146,7 @@ class BFIGitHubPluginUpdater {
 		// DESCRIPTION CONTENT {
 
 			$description_content[ 0 ] = '#Changes Since Last Plugin Update';
-			$description_content[ 1 ] = 'This is the only chance to see what happend since the last plugin update. So please read the changes carefully and adapt your theme-code, before you update the plugin.';
+			$description_content[ 1 ] = 'Modified: This is the only chance to see what happend since the last plugin update. So please read the changes carefully and adapt your theme-code, before you update the plugin.';
 
 			if ( is_array( $this->githubAPIResults ) and count( $this->githubAPIResults ) > 0 ) {
 
@@ -241,7 +241,7 @@ class BFIGitHubPluginUpdater {
 	// Perform additional actions to successfully install our plugin
 	public function postInstall( $true, $hook_extra, $result ) {
 		// Get plugin information
-		// var_dump($result);
+		var_dump($result);
 		$this->initPluginData();
 
 		// Remember if our plugin was previously activated
