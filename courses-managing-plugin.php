@@ -17,7 +17,7 @@ Issues to be addressed:
 ******************************************************************************
 
 Change Log:
-3.8.7:	Show Me Notification
+3.8.7:	Show Me Notification PLZ
 3.8.6:	Updater skip bad release
 3.8.5:	Work on updater reactivation
 3.8.4:	Work on updater info
