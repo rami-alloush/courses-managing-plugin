@@ -154,7 +154,7 @@ class BFIGitHubPluginUpdater {
 
 					if ( $item->tag_name > $this->pluginData['Version'] ) {
 						$description_content[ $item->tag_name ] = '......................................................................................................................' . "\n\n";
-						$description_content[ $item->tag_name ] .= '[Release v' . $item->tag_name . '](https://github.com/johannheyne/wordpress-toolset/releases/tag/' . $item->tag_name . ')' . "\n\n";
+						$description_content[ $item->tag_name ] .= '[Release v' . $item->tag_name . "](https://github.com/{$this->username}/{$this->repo}/releases/tag/" . $item->tag_name . ')' . "\n\n";
 						//$description_content[ $item->tag_name ] .= date( "Y.m.d H.i.s", strtotime( $item->published_at ) ) . "\n\n";
 						$description_content[ $item->tag_name ] .= str_replace( '####', '##', $item->body );
 						
@@ -241,6 +241,7 @@ class BFIGitHubPluginUpdater {
 	// Perform additional actions to successfully install our plugin
 	public function postInstall( $true, $hook_extra, $result ) {
 		// Get plugin information
+		// var_dump($result);
 		$this->initPluginData();
 
 		// Remember if our plugin was previously activated
