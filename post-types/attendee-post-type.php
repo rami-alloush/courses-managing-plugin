@@ -7,7 +7,7 @@ if(!class_exists('AttendeePostTypeTemplate')) //###
     class AttendeePostTypeTemplate //###
     {
         const PRODUCT_NAME  = "attendee"; //###
-        const CAT_NAME	    = "AttCustomTax"; //###
+        const CAT_NAME	    = null; //###
 		const POST_TITLE	= "Enter Attendee Name"; //###
         const MENU_ICON	    = "dashicons-welcome-learn-more"; //###
         const PRODUCT_NO    = ''; //### Code Numbering Here based on cat slug
@@ -24,9 +24,11 @@ if(!class_exists('AttendeePostTypeTemplate')) //###
 		public function init() {
 			/// Initialize Post Type
 			$this->create_post_type();
-			$this->create_post_taxonomies();
+			if(self::CAT_NAME) {
+				$this->create_post_taxonomies();
+			}
 			
-			include(sprintf("%s/../post-types/%s_acf_fields.php", dirname(__FILE__),self::PRODUCT_NAME));  
+			include(sprintf("%s/../post-types/%s_acf_fields.php", dirname(__FILE__),self::PRODUCT_NAME));
 			
 			add_action('save_post', array(&$this, 'save_post'),10,2);
 			add_filter( 'enter_title_here', array(&$this,'change_default_title' ));			
@@ -86,7 +88,7 @@ if(!class_exists('AttendeePostTypeTemplate')) //###
 				'hierarchical'       => false,
 				'menu_position'      => null,
 				'menu_icon' 		 => self::MENU_ICON,
-				'supports'           => array( 'title', 'editor', 'thumbnail') //,'author', 'excerpt', 'comments' )
+				'supports'           => array( 'title', 'thumbnail') //,'author', 'excerpt', 'comments' )
 			);
 
 			register_post_type( self::PRODUCT_NAME , $args );
@@ -212,13 +214,7 @@ if(!class_exists('AttendeePostTypeTemplate')) //###
 														'post_type' => self::PRODUCT_NAME,
 														'post_status'   => 'publish',
 														'posts_per_page' => -1,
-														'tax_query' => array(
-																		array(
-																		'taxonomy' => self::CAT_NAME,
-																		'field' => 'id',
-																		'terms' => array( $cat->term_id )
-																		)
-																	  )
+														'tax_query' => $tax_query,
 												));
 					$product_number = str_pad($product_query->post_count, 5, "0", STR_PAD_LEFT);
 					$product_code   = self::ITEM_INI . self::PRODUCT_NO . $cat_number . $product_number;
@@ -237,7 +233,7 @@ if(!class_exists('AttendeePostTypeTemplate')) //###
 							while (in_array($product_code, $existing_codes)) {
 								$code_int = preg_replace('/[^0-9]/i', '',$product_code);
 								$new_code_int = (int)$code_int + 1;
-								$product_code = self::ITEM_INI . $new_code_int;
+								$product_code = str_pad(self::ITEM_INI . $new_code_int, 5, "0", STR_PAD_LEFT);
 							}
 						}
 					
@@ -254,6 +250,8 @@ if(!class_exists('AttendeePostTypeTemplate')) //###
 		public function admin_init() {           
 			// Add metaboxes
 			add_action('add_meta_boxes', array(&$this, 'add_meta_boxes'));
+			add_filter('acf/load_field/key=field_cmp_att_company', array(&$this,'acf_cmp_return_companys'));
+
 		} // END public function admin_init()
 		
 		/*** hook into WP's add_meta_boxes action hook */
@@ -278,12 +276,33 @@ if(!class_exists('AttendeePostTypeTemplate')) //###
 		  echo $html;
 		}
 		
-		/*** called off of the add meta box */				
-		public function add_code_meta_boxes($post) {       
+		public function acf_cmp_return_companys($field) {
+		
+			switch_to_blog(1); //switch to main site
+				$companys = get_posts( array( 'post_type' => 'company', 'post_status' => 'publish','posts_per_page'   => -1, 'order'=> 'ASC' ) );
+				foreach ( $companys as $key => $company ) {
+					$company_name		= get_the_title( $company );
+					$company_code  		= get_field('product_code', $company);
+					$companys_list[$key]	= array( 'name' => $company_code .' | '. $company_name,
+													'value' => $company_code,
+													);
+				}
+			restore_current_blog();
+		
+			$field['choices'] = array();
+			
+			foreach ( $companys_list as $company) {
+				$field['choices'][ $company['value'] ] = $company['name'];
+			}	
+			return $field;
+		}
+		
+				/*** called off of the add meta box */				
+		public function add_code_meta_boxes($post) {
 			// Render the job order metabox
-			include(sprintf("%s/../post-types/product_code.php", dirname(__FILE__)));         
+			include(sprintf("%s/../post-types/product_code.php", dirname(__FILE__)));			
 		} // END public function add_inner_meta_boxes($post)
-
+		
     } // END class AttendeePostTypeTemplate
 } // END if(!class_exists('AttendeePostTypeTemplate'))
 
@@ -297,5 +316,6 @@ if(!function_exists('cmp_return_attendees')) {
 			$attendees_list[$key]	= $cattendee_code .' | '. $attendee_name;
 		}
 	return $attendees_list;
+	// return array('asasa'=>'sasas');
 	}
 }

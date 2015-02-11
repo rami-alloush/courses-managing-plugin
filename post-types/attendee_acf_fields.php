@@ -6,6 +6,16 @@ if(function_exists("register_field_group"))
 		'title' => 'attendees',
 		'fields' => array (
 			array (
+				'key' => 'field_544b819a99b77att',
+				'label' => 'Email',
+				'name' => 'att_email',
+				'type' => 'email',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+			),
+			array (
 				'key' => 'field_544b7b35f7decatt',
 				'label' => 'Mobile/Phone',
 				'name' => 'att_mobile',
@@ -18,27 +28,57 @@ if(function_exists("register_field_group"))
 				'maxlength' => '',
 			),
 			array (
-				'key' => 'field_54cf4714142a5att',
-				'label' => 'Old Code',
-				'name' => 'att_old_code',
+				'key' => 'field_544b7b35f7nation',
+				'label' => 'Nationality',
+				'name' => 'att_nationality',
 				'type' => 'text',
-				'default_value' => '',
+				'default_value' => 'Egypt',
 				'placeholder' => '',
 				'prepend' => '',
 				'append' => '',
 				'formatting' => 'html',
 				'maxlength' => '',
-			),			
+			),
 			array (
-				'key' => 'field_544b819a99b77att',
-				'label' => 'Email',
-				'name' => 'att_email',
-				'type' => 'email',
+				'key' => 'field_544b7b35attjob',
+				'label' => 'Job Title',
+				'name' => 'att_job',
+				'type' => 'text',
 				'default_value' => '',
-				'placeholder' => '',
+				'placeholder' => 'Engineer',
 				'prepend' => '',
 				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
 			),
+			array (
+				'key' => 'field_cmp_att_company',
+				'label' => 'Company',
+				'name' => 'att_company',
+				'prefix' => '',
+				'type' => 'select',
+				'instructions' => '',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array (
+					'width' => '',
+					'class' => 'visit_person_repeat_class',
+					'id' => 'visit_person_repeat_id',
+				),
+				'choices' => array (
+					'' => '',
+				),
+				'default_value' => array (
+					'' => '',
+				),
+				'allow_null' => 0,
+				'multiple' => 0,
+				'ui' => 0,
+				'ajax' => 1,
+				'placeholder' => '',
+				'disabled' => 0,
+				'readonly' => 0,
+			),		
 			array (
 				'key' => 'field_544baa35d7fafatt',
 				'label' => 'Y.O.E',
@@ -110,4 +150,42 @@ if(function_exists("register_field_group"))
 		'menu_order' => 0,
 	));
 }
+
+if( function_exists('register_field_group') ):
+
+register_field_group(array (
+	'key' => 'group_54da54b4b336e',
+	'title' => 'Old Code',
+	'fields' => array (
+		array (
+			'key' => 'field_54cf4714142a5att',
+			'label' => 'Old Code',
+			'name' => 'att_old_code',
+			'type' => 'text',
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'formatting' => 'html',
+			'maxlength' => '',
+		),
+	),
+	'location' => array (
+		array (
+			array (
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'attendee',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'side',
+	'style' => 'seamless',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+));
+
+endif;
 ?>

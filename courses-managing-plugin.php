@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Courses Managing Plugin (CMP)
-Plugin URI: mailto:rami.m.alloush@gmail.com
+Plugin URI: https://github.com/MrNoComment/courses-managing-plugin
 Description: Full integrated system to manage and organise courses data and information (Depend on Zend Framework) 
-Version: 3.8
+Version: 3.8.2
 Author: Eng. Rami Alloush
 Author URI: mailto:rami.m.alloush@gmail.com
 License: GPLv2
@@ -17,6 +17,8 @@ Issues to be addressed:
 ******************************************************************************
 
 Change Log:
+3.8.2:	Attendees Custom Fields 
+3.8.1:	Fix attendees coding
 3.8 :	Fix taxonomy for instructors to use registered 'category' from courses
 3.7 :	Finalize Attendees and Instructors 
 3.6 :	Add Certificate SN support and company data to attendee 
@@ -45,10 +47,6 @@ if(!class_exists('cmp_plugin'))
         /* Construct the plugin object */
         public function __construct()
         {
-			require_once(sprintf("%s/includes/BFIGitHubPluginUploader.php", dirname(__FILE__)));
-			if ( is_admin() ) {
-				new BFIGitHubPluginUpdater( __FILE__, 'MrNoComment', "courses-managing-plugin" );
-			}
 			// register actions
 			add_action('admin_init', array(&$this, 'admin_init'));
 			add_action('admin_menu', array(&$this, 'manage_menu'));
@@ -68,6 +66,11 @@ if(!class_exists('cmp_plugin'))
 		{
 			// Set up the settings for this plugin
 			$this->init_settings();
+			// var_dump(get_plugin_data( __FILE__ ));
+			require_once(sprintf("%s/includes/BFIGitHubPluginUploader.php", dirname(__FILE__)));
+			// if ( is_admin() ) {
+				new BFIGitHubPluginUpdater( __FILE__, 'MrNoComment', "courses-managing-plugin" );
+			// }			
 			// Possibly do additional admin_init tasks
 		} // END public static function activate
 		
@@ -335,10 +338,12 @@ if(isset($cmp_plugin))
 	add_action('admin_enqueue_scripts', 'cmp_load_scripts');
 
 	function localize_vars() {
-		return array(
-			'SendAttendeesData' => cmp_return_attendees(), //array('r','ra','rami | dsdwe')
-			'SendCompanysData' => cmp_return_companys(), //array('r','ra','rami | dsdwe')
-		);
+		if(function_exists('cmp_return_attendees') && function_exists('cmp_return_companys')) {
+			return array(
+				'SendCompanysData' => cmp_return_companys(), //array('r','ra','rami | dsdwe')
+				'SendAttendeesData' => cmp_return_attendees(), //array('r','ra','rami | dsdwe')
+				);
+		}
 	} //End localize_vars
 	
 	function cmp_autocomplete_script() {
@@ -430,15 +435,17 @@ if(isset($cmp_plugin))
 	// Returns option HTML for ALL Companys
 	if(!function_exists('cmp_return_companys')) {
 		function cmp_return_companys() {
-		switch_to_blog(1); //switch to main site
-			$companys = get_posts( array( 'post_type' => 'company', 'post_status' => 'publish','posts_per_page'   => -1, ) );
-			foreach ( $companys as $key => $company ) {
-				$company_name		= get_the_title( $company );
-				$company_code  		= get_field('product_code', $company);
-				$companys_list[$key]	= $company_code .' | '. $company_name;
+			if ( is_multisite() ) {
+				switch_to_blog(1); //switch to main site
+				$companys = get_posts( array( 'post_type' => 'company', 'post_status' => 'publish','posts_per_page'   => -1, ) );
+				foreach ( $companys as $key => $company ) {
+					$company_name		= get_the_title( $company );
+					$company_code  		= get_field('product_code', $company);
+					$companys_list[$key]	= $company_code .' | '. $company_name;
+				}
+				restore_current_blog();
+				return $companys_list;		
 			}
-		restore_current_blog();
-		return $companys_list;		
 		}
 	}
 }

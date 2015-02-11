@@ -78,6 +78,39 @@
 				else :
 					// no rows found
 				endif;
+				
+				
+				$username = 'MrNoComment';
+				$repo = "courses-managing-plugin";
+				$url = "https://api.github.com/repos/{$username}/{$repo}/releases";
+
+				if ( ! empty( $accessToken ) )
+				{
+					$url = add_query_arg( array( "access_token" => $this->accessToken ), $url );
+				}
+
+				// Get the results
+				$githubAPIResult = wp_remote_retrieve_body( wp_remote_get( $url ) );
+				print_r($githubAPIResult);
+				
+				if ( ! empty( $githubAPIResult ) )
+				{
+					$githubAPIResult = @json_decode( $githubAPIResult );
+					var_dump($githubAPIResult);
+				}
+
+				// Use only the latest release
+				if ( is_array( $githubAPIResult ) )
+				{
+					$githubAPIResult = $githubAPIResult[0];
+					echo '<pre>';
+						// var_dump($githubAPIResult);
+						// var_dump(get_plugin_data( __FILE__ ));
+
+		// $this->pluginData = get_plugin_data( $this->pluginFile ););
+					echo '<pre>';
+				}
+				
 				?>
 			  </div>
         </table>
