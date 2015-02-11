@@ -3,7 +3,7 @@
 Plugin Name: Courses Managing Plugin (CMP)
 Plugin URI: https://github.com/MrNoComment/courses-managing-plugin
 Description: Full integrated system to manage and organise courses data and information (Depend on Zend Framework) 
-Version: 3.8.6
+Version: 3.8.8
 Author: Eng. Rami Alloush
 Author URI: mailto:rami.m.alloush@gmail.com
 License: GPLv2
@@ -17,6 +17,7 @@ Issues to be addressed:
 ******************************************************************************
 
 Change Log:
+3.8.8:	Fix Training Permissions
 3.8.6:	Updater skip bad release
 3.8.5:	Work on updater reactivation
 3.8.4:	Work on updater info
@@ -155,12 +156,25 @@ if(!class_exists('cmp_plugin'))
 		// Run a Course Callback 
 		public function cmp_run_course_page()
 		{
-			if(!current_user_can('manage_options'))
+			if(!current_user_can('edsc_training_coordinator'))
 			{ wp_die(__('You do not have sufficient permissions to access this page. OR PAGE DOES NOT EXIST!')); }
 
 			// Render the landing template
 				include(sprintf("%s/templates/run_course.inc.php", dirname(__FILE__)));
 		} // END public function cmp_run_course_page()
+		
+		// Manage Courses Callback 
+		public function cmp_manage_courses_page()
+		{
+			if(!current_user_can('edsc_training_coordinator'))
+			{
+				wp_die(__('You do not have sufficient permissions to access this page. OR PAGE DOES NOT EXIST!'));
+			}
+
+			// Render the landing template
+				include(sprintf("%s/templates/manage_courses.php", dirname(__FILE__)));
+			
+		} // END public function cmp_manage_courses_page()		
 		
 		// Letter Head Callback 
 		public function cmp_letter_head_page()
@@ -181,19 +195,6 @@ if(!class_exists('cmp_plugin'))
 			// Render the landing template
 				include(sprintf("%s/templates/landing_page.php", dirname(__FILE__)));
 		} // END public function cmp_reporting_page()
-		
-		// Manage Courses Callback 
-		public function cmp_manage_courses_page()
-		{
-			if(!current_user_can('manage_options'))
-			{
-				wp_die(__('You do not have sufficient permissions to access this page. OR PAGE DOES NOT EXIST!'));
-			}
-
-			// Render the landing template
-				include(sprintf("%s/templates/manage_courses.php", dirname(__FILE__)));
-			
-		} // END public function cmp_manage_courses_page()
 		
 		/* Initialize some custom settings */     
 		public function init_settings()

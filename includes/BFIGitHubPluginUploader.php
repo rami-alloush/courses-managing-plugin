@@ -13,6 +13,9 @@ class BFIGitHubPluginUpdater {
 
 	function __construct( $pluginFile, $gitHubUsername, $gitHubProjectName, $accessToken = '' ) {
 		add_filter( "pre_set_site_transient_update_plugins", array( $this, "setTransitent" ) );
+		add_filter( 'site_transient_update_plugins', array($this,'setTransitent')); //WP 3.0+
+		add_filter( 'transient_update_plugins', array($this,'setTransitent')); //WP 2.8+
+		set_site_transient(array($this,'setTransitent'), null);
 		add_filter( "plugins_api", array( $this, "setPluginInfo" ), 10, 3 );
 		add_filter( "upgrader_post_install", array( $this, "postInstall" ), 10, 3 );
 
