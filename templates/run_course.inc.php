@@ -9,6 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit-add']=='Add Course') 
 				//join the post values into comma separated (values from arrays)
 				if (!empty($_POST['part_code'])) {$part_code = mysql_real_escape_string(implode(',', $_POST['part_code']));}
 				if (!empty($_POST['part_paid'])) {$part_paid = mysql_real_escape_string(implode(',', $_POST['part_paid']));}
+				if (!empty($_POST['part_comp'])) {$part_comp = mysql_real_escape_string(implode(',', $_POST['part_comp']));}
+				if (!empty($_POST['part_cert'])) {$part_cert = mysql_real_escape_string(implode(',', $_POST['part_cert']));}
 				if (!empty($_POST['eval'])) {$eval = mysql_real_escape_string(implode(',', $_POST['eval']));}
 				if (!empty($_POST['task_cost'])) {$task_cost = mysql_real_escape_string(implode(',', $_POST['task_cost']));}
 				if (!empty($_POST['task_done'])) {$task_done = mysql_real_escape_string(implode(',', $_POST['task_done']));}
@@ -82,6 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit-add']=='Add Course') 
 					'status'=> $_POST['course_status'],
 					'part_code'=> $part_code,
 					'part_paid'=> $part_paid,
+					'part_comp'=> $part_comp,
+					'part_cert'=> $part_cert,
 					'eval'=> $eval,
 					'task_cost' => $task_cost,
 					'task_done' => $task_done,
