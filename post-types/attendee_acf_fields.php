@@ -16,6 +16,16 @@ if(function_exists("register_field_group"))
 				'append' => '',
 			),
 			array (
+				'key' => 'field_544b819aattid',
+				'label' => 'Attendee Unique ID',
+				'name' => 'att_unique_id',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+			),
+			array (
 				'key' => 'field_544b7b35f7decatt',
 				'label' => 'Mobile/Phone',
 				'name' => 'att_mobile',
