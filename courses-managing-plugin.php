@@ -3,7 +3,7 @@
 Plugin Name: Courses Managing Plugin (CMP)
 Plugin URI: https://github.com/MrNoComment/courses-managing-plugin
 Description: Full integrated system to manage and organise courses data and information (Depend on Zend Framework) 
-Version: 3.8.2
+Version: 3.8.3
 Author: Eng. Rami Alloush
 Author URI: mailto:rami.m.alloush@gmail.com
 License: GPLv2
