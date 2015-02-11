@@ -17,6 +17,7 @@ Issues to be addressed:
 ******************************************************************************
 
 Change Log:
+3.8.3:	Work on updater
 3.8.2:	Attendees Custom Fields 
 3.8.1:	Fix attendees coding
 3.8 :	Fix taxonomy for instructors to use registered 'category' from courses
